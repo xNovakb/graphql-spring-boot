@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: graphql-playground
+  graphql:
+    schema:
+      locations: classpath:graphql # Location of the GraphQL schema files default is classpath:graphql
+    path: /graphql
+    graphiql: # Is a graphical interactive in-browser GraphQL IDE
+      enabled: true # Not recommended for production
+      path: /graphiql
