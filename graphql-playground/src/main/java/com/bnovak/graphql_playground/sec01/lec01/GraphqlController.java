@@ -1,4 +1,4 @@
-package com.bnovak.graphql_playground.controller;
+package com.bnovak.graphql_playground.sec01.lec01;
 
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
