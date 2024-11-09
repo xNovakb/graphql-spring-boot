@@ -3,7 +3,7 @@ spring:
     name: graphql-playground
   graphql:
     schema:
-      locations: classpath:graphql/sec01/lec04 # Location of the GraphQL schema files default is classpath:graphql
+      locations: classpath:graphql/sec01/lec05 # Location of the GraphQL schema files default is classpath:graphql
     path: /graphql
     graphiql: # Is a graphical interactive in-browser GraphQL IDE
       enabled: true # Not recommended for production
