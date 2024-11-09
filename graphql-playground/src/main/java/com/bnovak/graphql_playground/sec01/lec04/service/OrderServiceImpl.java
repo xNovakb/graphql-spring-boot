@@ -1,9 +1,12 @@
 package com.bnovak.graphql_playground.sec01.lec04.service;
 
+import com.bnovak.graphql_playground.sec01.lec04.dto.CustomerDto;
 import com.bnovak.graphql_playground.sec01.lec04.dto.CustomerOrderDto;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +39,15 @@ public class OrderServiceImpl implements OrderService {
                 .flatMapSequential(name -> fetchOrders(name).defaultIfEmpty(Collections.emptyList()));
     }
 
+    @Override
+    public Mono<Map<CustomerDto, List<CustomerOrderDto>>> fetchOrdersMap(List<CustomerDto> customers) {
+        return Flux.fromIterable(customers)
+                .map(c -> Tuples.of(c, mapOfOrders.getOrDefault(c.getName(), Collections.emptyList())))
+                .collectMap(Tuple2::getT1, Tuple2::getT2);
+    }
+
     private Mono<List<CustomerOrderDto>> fetchOrders(String name) {
         return Mono.justOrEmpty(mapOfOrders.get(name));
     }
+
 }

@@ -9,8 +9,10 @@ import org.springframework.graphql.data.method.annotation.BatchMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -27,12 +29,18 @@ public class CustomerController {
     }
 
     //BatchMapping is used to fetch multiple orders for multiple customers in a single query solves the N+1 problem
-    @BatchMapping(typeName = "Customer", field = "orders")
+/*    @BatchMapping(typeName = "Customer", field = "orders")
     public Flux<List<CustomerOrderDto>> getCustomerOrders(List<CustomerDto> customers) {
         System.out.println("Orders method invoked for customer: " + customers);
         return orderService.ordersByCustomerNames(customers.stream()
                 .map(CustomerDto::getName)
                 .collect(Collectors.toList()));
+    }*/
+
+    @BatchMapping(typeName = "Customer", field = "orders")
+    public Mono<Map<CustomerDto, List<CustomerOrderDto>>> getCustomerOrders(List<CustomerDto> customers) {
+        System.out.println("Orders method invoked for customer: " + customers);
+        return orderService.fetchOrdersMap(customers);
     }
 
 }
