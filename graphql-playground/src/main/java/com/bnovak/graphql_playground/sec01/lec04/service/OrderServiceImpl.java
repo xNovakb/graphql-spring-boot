@@ -3,6 +3,7 @@ package com.bnovak.graphql_playground.sec01.lec04.service;
 import com.bnovak.graphql_playground.sec01.lec04.dto.CustomerOrderDto;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Flux<List<CustomerOrderDto>> ordersByCustomerNames(List<String> names) {
         return Flux.fromIterable(names)
-                .map(name -> mapOfOrders.getOrDefault(name, Collections.emptyList()));
+                .flatMap(name -> fetchOrders(name).defaultIfEmpty(Collections.emptyList()));
+    }
+
+    private Mono<List<CustomerOrderDto>> fetchOrders(String name) {
+        return Mono.justOrEmpty(mapOfOrders.get(name));
     }
 }
