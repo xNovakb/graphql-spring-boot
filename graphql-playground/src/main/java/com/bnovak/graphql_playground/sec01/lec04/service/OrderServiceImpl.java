@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Flux<List<CustomerOrderDto>> ordersByCustomerNames(List<String> names) {
         return Flux.fromIterable(names)
-                .flatMap(name -> fetchOrders(name).defaultIfEmpty(Collections.emptyList()));
+                .flatMapSequential(name -> fetchOrders(name).defaultIfEmpty(Collections.emptyList()));
     }
 
     private Mono<List<CustomerOrderDto>> fetchOrders(String name) {
