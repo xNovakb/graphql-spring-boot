@@ -3,7 +3,7 @@ package com.bnovak.graphql_playground;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.bnovak.graphql_playground.lec09")
+@SpringBootApplication(scanBasePackages = "com.bnovak.graphql_playground.lec10")
 public class GraphqlPlaygroundApplication {
 
 	public static void main(String[] args) {
