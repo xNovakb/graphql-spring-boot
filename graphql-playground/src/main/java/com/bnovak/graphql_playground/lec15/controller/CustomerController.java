@@ -1,6 +1,7 @@
 package com.bnovak.graphql_playground.lec15.controller;
 
 import com.bnovak.graphql_playground.lec15.dto.CustomerDto;
+import com.bnovak.graphql_playground.lec15.dto.CustomerNotFound;
 import com.bnovak.graphql_playground.lec15.dto.DeleteResponseDto;
 import com.bnovak.graphql_playground.lec15.exception.ApplicationErrors;
 import com.bnovak.graphql_playground.lec15.service.CustomerService;
@@ -24,9 +25,10 @@ public class CustomerController {
     }
 
     @QueryMapping
-    public Mono<CustomerDto> customerById(@Argument Integer id) {
+    public Mono<Object> customerById(@Argument Integer id) {
         return customerService.getCustomerById(id)
-                .switchIfEmpty(ApplicationErrors.noSuchUser(id));
+                .cast(Object.class)
+                .switchIfEmpty(Mono.just(CustomerNotFound.create(id)));
     }
 
     @MutationMapping
