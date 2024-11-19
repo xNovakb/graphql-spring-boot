@@ -5,6 +5,7 @@ import com.bnovak.graphql_playground.lec15.dto.CustomerNotFound;
 import com.bnovak.graphql_playground.lec15.dto.DeleteResponseDto;
 import com.bnovak.graphql_playground.lec15.exception.ApplicationErrors;
 import com.bnovak.graphql_playground.lec15.service.CustomerService;
+import graphql.schema.DataFetchingEnvironment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -20,7 +21,9 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @QueryMapping
-    public Flux<CustomerDto> customers() {
+    public Flux<CustomerDto> customers(DataFetchingEnvironment environment) {
+        var callerId = environment.getGraphQlContext().get("callerId");
+        System.out.println("Caller ID: " + callerId);
         return customerService.allCustomers();
     }
 

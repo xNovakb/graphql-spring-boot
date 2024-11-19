@@ -16,7 +16,7 @@ public class TypeResolverConfig {
         resolver.addMapping(CustomerDto.class, "Customer");
         return resolver;
     }
-
+ 
     @Bean
     public RuntimeWiringConfigurer configurer(TypeResolver resolver) {
         return c -> c.type("CustomerResponse", b -> b.typeResolver(resolver));
