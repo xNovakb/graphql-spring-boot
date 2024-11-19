@@ -34,6 +34,6 @@ public class ExceptionResolver implements DataFetcherExceptionResolver {
     private ApplicationException toApplicationException(Throwable throwable) {
         return ApplicationException.class.equals(throwable.getClass()) ?
                 (ApplicationException) throwable :
-                new ApplicationException(ErrorType.DataFetchingException, throwable.getMessage(), Collections.emptyMap());
+                new ApplicationException(ErrorType.ValidationError, throwable.getMessage(), Collections.emptyMap());
     }
 }

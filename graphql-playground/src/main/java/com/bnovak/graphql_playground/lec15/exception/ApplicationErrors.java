@@ -14,4 +14,11 @@ public class ApplicationErrors {
         )));
     }
 
+    public static <T> Mono<T> ageIsLowerThan18(Integer age) {
+        return Mono.error(new ApplicationException(
+                ErrorType.DataFetchingException, "Age is lower than 18", Map.of(
+                "age", age
+        )));
+    }
+
 }
