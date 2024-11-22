@@ -24,7 +24,8 @@ public class CustomerController {
 
     @QueryMapping
     public Mono<CustomerDto> customerById(@Argument Integer id) {
-        return customerService.getCustomerById(id);
+        return customerService.getCustomerById(id)
+                .switchIfEmpty(Mono.error(new RuntimeException("Customer not found")));
     }
 
     @MutationMapping
