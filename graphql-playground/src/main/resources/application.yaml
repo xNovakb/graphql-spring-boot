@@ -3,7 +3,7 @@ spring:
     name: graphql-playground
   graphql:
     schema:
-      locations: classpath:graphql/lec15 # Location of the GraphQL schema files default is classpath:graphql
+      locations: classpath:graphql/lec16 # Location of the GraphQL schema files default is classpath:graphql
     path: /graphql
     websocket:
       path: /graphql
@@ -14,3 +14,7 @@ spring:
 logging:
   level:
     root: INFO
+
+customer:
+  service:
+    url: http://localhost:8080/graphql
