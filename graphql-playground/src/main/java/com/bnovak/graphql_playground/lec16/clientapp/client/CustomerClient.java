@@ -27,8 +27,8 @@ public class CustomerClient {
     public Mono<MultiCustomerAssignment> getCustomerById(Integer id) {
         return this.client.documentName("customer-by-id")
                 .variable("id", id)
-                .retrieve("")
-                .toEntity(MultiCustomerAssignment.class);
+                .execute()
+                .map(cr -> cr.toEntity(MultiCustomerAssignment.class));
     }
 
 }
