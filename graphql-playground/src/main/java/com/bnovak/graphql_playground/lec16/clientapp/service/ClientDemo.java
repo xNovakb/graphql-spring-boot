@@ -1,6 +1,7 @@
 package com.bnovak.graphql_playground.lec16.clientapp.service;
 
 import com.bnovak.graphql_playground.lec16.clientapp.client.CustomerClient;
+import com.bnovak.graphql_playground.lec16.clientapp.client.SubscriptionClient;
 import com.bnovak.graphql_playground.lec16.dto.CustomerDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -15,14 +16,20 @@ public class ClientDemo implements CommandLineRunner {
 
     private final CustomerClient client;
 
+    private final SubscriptionClient subscriptionClient;
+
     @Override
     public void run(String... args) throws Exception {
+        this.subscriptionClient.customerEvents()
+            .doOnNext(e -> System.out.println(" ** " + e.toString() + " ** "))
+            .subscribe();
+
         createCustomer()
-                .then(getCustomerByIdCrud())
-                .then(updateCustomer())
-                .then(deleteCustomer())
-                .then(getAllCustomers())
-                .subscribe();
+            .then(getCustomerByIdCrud())
+            .then(updateCustomer())
+            .then(deleteCustomer())
+            .then(getAllCustomers())
+            .subscribe();
     }
 
     private Mono<Void> rawQueryDemo() {
