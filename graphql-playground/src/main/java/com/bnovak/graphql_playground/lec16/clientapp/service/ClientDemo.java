@@ -17,8 +17,11 @@ public class ClientDemo implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        getAllCustomers()
+        createCustomer()
                 .then(getCustomerByIdCrud())
+                .then(updateCustomer())
+                .then(deleteCustomer())
+                .then(getAllCustomers())
                 .subscribe();
     }
 
@@ -49,7 +52,19 @@ public class ClientDemo implements CommandLineRunner {
     }
 
     private Mono<Void> getCustomerByIdCrud() {
-        return this.executor("GetCustomerById", this.client.getCustomerByIdCrud(1));
+        return this.executor("GetCustomerById", this.client.getCustomerByIdCrud(11));
+    }
+
+    private Mono<Void> createCustomer() {
+        return this.executor("CreateCustomer", this.client.createCustomer(new CustomerDto().setAge(30).setCity("Budapest").setName("John")));
+    }
+
+    private Mono<Void> updateCustomer() {
+        return this.executor("UpdateCustomer", this.client.updateCustomer(2, new CustomerDto().setAge(18).setCity("Budapest").setName("John")));
+    }
+
+    private Mono<Void> deleteCustomer() {
+        return this.executor("UpdateCustomer", this.client.deleteCustomer(11));
     }
 
     private <T> Mono<Void> executor(String message, Mono<T> mono) {

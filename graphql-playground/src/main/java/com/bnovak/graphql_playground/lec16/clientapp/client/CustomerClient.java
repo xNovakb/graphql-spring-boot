@@ -61,6 +61,18 @@ public class CustomerClient {
         return this.crud("GetCustomerById", Map.of("id", id), new ParameterizedTypeReference<CustomerDto>() {});
     }
 
+    public Mono<CustomerDto> createCustomer(CustomerDto dto) {
+        return this.crud("CreateCustomer", Map.of("customer", dto), new ParameterizedTypeReference<CustomerDto>() {});
+    }
+
+    public Mono<CustomerDto> updateCustomer(Integer id, CustomerDto dto) {
+        return this.crud("UpdateCustomer", Map.of("id", id, "customer", dto), new ParameterizedTypeReference<CustomerDto>() {});
+    }
+
+    public Mono<DeleteResponseDto> deleteCustomer(Integer id) {
+        return this.crud("DeleteCustomer", Map.of("id", id), new ParameterizedTypeReference<DeleteResponseDto>() {});
+    }
+
     private <T> Mono<T> crud(String operationName, Map<String, Object> variables, ParameterizedTypeReference<T> type) {
         return this.client.documentName("crud-operations")
                 .operationName(operationName)

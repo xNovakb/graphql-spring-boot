@@ -43,7 +43,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Mono<CustomerDto> updateCustomer(Integer id, CustomerDto customerDto) {
         return customerRepository.findById(id)
-                .map(c -> EntityDtoUtil.toEntity(customerDto))
+                .map(_ -> {
+                    var customer = EntityDtoUtil.toEntity(customerDto);
+                    customer.setId(id);
+                    return customer;
+                })
                 .flatMap(customerRepository::save)
                 .map(EntityDtoUtil::toDto)
                 .doOnNext(c -> eventService.emitEvent(CustomerEvent.create(c.getId(), Action.UPDATED)));
