@@ -1,8 +1,6 @@
 package com.bnovak.graphql_playground.lec16.clientapp.client;
 
-import com.bnovak.graphql_playground.lec16.dto.CustomerDto;
-import com.bnovak.graphql_playground.lec16.dto.GenericResponse;
-import com.bnovak.graphql_playground.lec16.dto.MultiCustomerAssignment;
+import com.bnovak.graphql_playground.lec16.dto.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.graphql.client.ClientGraphQlResponse;
 import org.springframework.graphql.client.HttpGraphQlClient;
@@ -36,6 +34,18 @@ public class CustomerClient {
                     var field = cr.field("customerById");
                     return Objects.nonNull(field.getValue()) ? new GenericResponse<>(field.toEntity(CustomerDto.class)) :
                             new GenericResponse<>(field.getErrors());
+                });
+    }
+
+    public Mono<CustomerResponse> getCustomerByIdWithUnion(Integer id) {
+        return this.client
+                .documentName("customer-by-id")
+                .variable("id", id)
+                .execute()
+                .map(cr -> {
+                    var field = cr.field("customerById");
+                    var isCustomer = "Customer".equals(cr.field("customerById.type").getValue().toString());
+                    return isCustomer ? field.toEntity(CustomerDto.class) : field.toEntity(CustomerNotFound.class);
                 });
     }
 

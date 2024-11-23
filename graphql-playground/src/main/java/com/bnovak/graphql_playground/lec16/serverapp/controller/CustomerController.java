@@ -1,6 +1,8 @@
 package com.bnovak.graphql_playground.lec16.serverapp.controller;
 
 import com.bnovak.graphql_playground.lec16.dto.CustomerDto;
+import com.bnovak.graphql_playground.lec16.dto.CustomerNotFound;
+import com.bnovak.graphql_playground.lec16.dto.CustomerResponse;
 import com.bnovak.graphql_playground.lec16.dto.DeleteResponseDto;
 import com.bnovak.graphql_playground.lec16.serverapp.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +25,10 @@ public class CustomerController {
     }
 
     @QueryMapping
-    public Mono<CustomerDto> customerById(@Argument Integer id) {
+    public Mono<Object> customerById(@Argument Integer id) {
         return customerService.getCustomerById(id)
-                .switchIfEmpty(Mono.error(new RuntimeException("Customer not found")));
+                .cast(Object.class)
+                .defaultIfEmpty(CustomerNotFound.create(id));
     }
 
     @MutationMapping
