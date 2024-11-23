@@ -7,6 +7,7 @@ import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -47,6 +48,21 @@ public class CustomerClient {
                     var isCustomer = "Customer".equals(cr.field("customerById.type").getValue().toString());
                     return isCustomer ? field.toEntity(CustomerDto.class) : field.toEntity(CustomerNotFound.class);
                 });
+    }
+
+    public Mono<List<CustomerDto>> allCustomers() {
+        return this.client.documentName("crud-operations")
+                .operationName("GetAll")
+                .retrieve("response")
+                .toEntityList(CustomerDto.class);
+    }
+
+    public Mono<CustomerDto> getCustomerByIdCrud(Integer id) {
+        return this.client.documentName("crud-operations")
+                .operationName("GetCustomerById")
+                .variable("id", id)
+                .retrieve("response")
+                .toEntity(CustomerDto.class);
     }
 
 }
